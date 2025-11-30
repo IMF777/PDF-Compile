@@ -837,7 +837,8 @@
 
                 // Get stored rotation for this image, or default to 0
                 currentRotation = imageRotations[currentIndex] || 0;
-                currentImage.style.transform = `rotate(${currentRotation}deg)`;
+                currentImage.style.transition = 'none';
+currentImage.style.transform = `rotate(${currentRotation}deg)`;
 
                 updateImageCounter();
                 updateRotationIndicator();
@@ -993,25 +994,28 @@
         }
 
         // Rotate image and store rotation
-        function rotateImage(degrees) {
-            currentRotation += degrees;
-
-            // Store rotation for current image
-            imageRotations[currentIndex] = currentRotation;
-
-            // Apply rotation to image
-            currentImage.style.transform = `rotate(${currentRotation}deg)`;
-
-            // Update rotation indicator
-            updateRotationIndicator();
-
-            // Update thumbnails to show rotation state
-            updateThumbnails();
-
-            // Show status message
-            const normalizedRotation = ((currentRotation % 360) + 360) % 360;
-            showStatus(`Image ${currentIndex + 1} rotated to ${normalizedRotation}°`, 'success');
-        }
+        // Rotate image and store rotation - INSTANT VERSION
+// Rotate image and store rotation - INSTANT VERSION
+function rotateImage(degrees) {
+    currentRotation += degrees;
+    
+    // Store rotation for current image
+    imageRotations[currentIndex] = currentRotation;
+    
+    // Remove any transition and apply rotation instantly
+    currentImage.style.transition = 'none';
+    currentImage.style.transform = `rotate(${currentRotation}deg)`;
+    
+    // Update rotation indicator
+    updateRotationIndicator();
+    
+    // Update thumbnails to show rotation state
+    updateThumbnails();
+    
+    // Show status message
+    const normalizedRotation = ((currentRotation % 360) + 360) % 360;
+    showStatus(`Image ${currentIndex + 1} rotated to ${normalizedRotation}°`, 'success');
+}
 
         // Add image to PDF with rotation
         function addImageToPdf() {
