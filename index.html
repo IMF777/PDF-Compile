@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
@@ -21,7 +22,7 @@
             flex-direction: column;
             align-items: center;
         }
-        
+
         .container {
             max-width: 1000px;
             width: 100%;
@@ -31,21 +32,21 @@
             padding: 30px;
             margin-top: 20px;
         }
-        
+
         h1 {
             text-align: center;
             color: #2c3e50;
             margin-bottom: 10px;
             font-size: 2.2rem;
         }
-        
+
         .subtitle {
             text-align: center;
             color: #7f8c8d;
             margin-bottom: 30px;
             font-size: 1.1rem;
         }
-        
+
         .upload-section {
             border: 2px dashed #3498db;
             border-radius: 10px;
@@ -55,28 +56,28 @@
             background-color: #f8fafc;
             transition: all 0.3s;
         }
-        
+
         .upload-section:hover {
             background-color: #e8f4fc;
             border-color: #2980b9;
         }
-        
+
         .upload-icon {
             font-size: 50px;
             color: #3498db;
             margin-bottom: 15px;
         }
-        
+
         .upload-text {
             font-size: 18px;
             color: #34495e;
             margin-bottom: 20px;
         }
-        
+
         .file-input {
             display: none;
         }
-        
+
         .upload-btn {
             background: #3498db;
             color: white;
@@ -87,15 +88,15 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-        
+
         .upload-btn:hover {
             background: #2980b9;
         }
-        
+
         .progress-section {
             margin-bottom: 30px;
         }
-        
+
         .progress-bar {
             height: 10px;
             background: #ecf0f1;
@@ -103,31 +104,31 @@
             overflow: hidden;
             margin-bottom: 10px;
         }
-        
+
         .progress {
             height: 100%;
             background: #2ecc71;
             width: 0%;
             transition: width 0.3s;
         }
-        
+
         .progress-text {
             text-align: center;
             font-size: 14px;
             color: #7f8c8d;
         }
-        
+
         .image-viewer {
             display: none;
             margin-bottom: 30px;
         }
-        
+
         .image-container {
             margin-bottom: 20px;
             text-align: center;
             position: relative;
         }
-        
+
         .current-image {
             max-width: 100%;
             max-height: 500px;
@@ -135,7 +136,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
-        
+
         .control-bar {
             display: flex;
             justify-content: space-between;
@@ -147,13 +148,15 @@
             padding: 15px;
             border-radius: 8px;
         }
-        
-        .nav-group, .rotate-group, .action-group {
+
+        .nav-group,
+        .rotate-group,
+        .action-group {
             display: flex;
             gap: 8px;
             align-items: center;
         }
-        
+
         .nav-btn {
             background: #34495e;
             color: white;
@@ -167,16 +170,16 @@
             align-items: center;
             gap: 5px;
         }
-        
+
         .nav-btn:hover:not(:disabled) {
             background: #2c3e50;
         }
-        
+
         .nav-btn:disabled {
             background: #bdc3c7;
             cursor: not-allowed;
         }
-        
+
         .rotate-btn {
             background: #9b59b6;
             color: white;
@@ -190,11 +193,11 @@
             align-items: center;
             gap: 5px;
         }
-        
+
         .rotate-btn:hover {
             background: #8e44ad;
         }
-        
+
         .action-btn {
             padding: 8px 16px;
             border: none;
@@ -203,25 +206,50 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .add-btn {
             background: #2ecc71;
             color: white;
         }
-        
+
         .add-btn:hover {
             background: #27ae60;
         }
-        
-        .skip-btn {
+
+        .delete-btn {
             background: #e74c3c;
             color: white;
         }
-        
-        .skip-btn:hover {
+
+        .delete-btn:hover {
             background: #c0392b;
         }
-        
+
+        .skip-btn {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .skip-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .remove-all-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+
+        .remove-all-btn:hover {
+            background: #c0392b;
+        }
+
         .export-section {
             display: none;
             text-align: center;
@@ -230,7 +258,7 @@
             border-radius: 8px;
             margin-top: 20px;
         }
-        
+
         .export-btn {
             background: #f39c12;
             color: white;
@@ -245,18 +273,26 @@
             gap: 10px;
             margin: 0 auto;
         }
-        
+
         .export-btn:hover {
             background: #e67e22;
         }
-        
+
         .image-counter {
             text-align: center;
             margin-bottom: 20px;
             font-size: 16px;
             color: #7f8c8d;
         }
-        
+
+        .rotation-indicator {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #9b59b6;
+            font-weight: bold;
+        }
+
         .status-message {
             text-align: center;
             padding: 15px;
@@ -264,19 +300,19 @@
             margin-bottom: 20px;
             display: none;
         }
-        
+
         .success {
             background: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
-        
+
         .error {
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-        
+
         .instructions {
             background: #e8f4fc;
             border-left: 4px solid #3498db;
@@ -284,21 +320,21 @@
             margin-bottom: 20px;
             border-radius: 0 6px 6px 0;
         }
-        
+
         .instructions h3 {
             color: #2c3e50;
             margin-bottom: 10px;
         }
-        
+
         .instructions ol {
             margin-left: 20px;
         }
-        
+
         .instructions li {
             margin-bottom: 8px;
             color: #34495e;
         }
-        
+
         .keyboard-shortcuts {
             background: #fff3cd;
             border-left: 4px solid #ffc107;
@@ -306,25 +342,25 @@
             margin-bottom: 20px;
             border-radius: 0 6px 6px 0;
         }
-        
+
         .keyboard-shortcuts h3 {
             color: #856404;
             margin-bottom: 10px;
         }
-        
+
         .shortcut-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
         }
-        
+
         .shortcut-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 4px 0;
         }
-        
+
         .key {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -334,7 +370,7 @@
             font-family: monospace;
             color: #495057;
         }
-        
+
         .jump-to-section {
             display: flex;
             justify-content: center;
@@ -343,7 +379,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        
+
         .jump-input {
             padding: 8px 12px;
             border: 1px solid #bdc3c7;
@@ -351,7 +387,7 @@
             width: 80px;
             text-align: center;
         }
-        
+
         .jump-btn {
             background: #3498db;
             color: white;
@@ -360,11 +396,11 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         .jump-btn:hover {
             background: #2980b9;
         }
-        
+
         .thumbnail-container {
             display: flex;
             flex-wrap: wrap;
@@ -377,7 +413,7 @@
             border: 1px solid #ecf0f1;
             border-radius: 6px;
         }
-        
+
         .thumbnail {
             width: 60px;
             height: 60px;
@@ -388,15 +424,15 @@
             transition: border 0.2s;
             position: relative;
         }
-        
+
         .thumbnail:hover {
             border: 2px solid #3498db;
         }
-        
+
         .thumbnail.active {
             border: 2px solid #e74c3c;
         }
-        
+
         .thumbnail.added::after {
             content: "✓";
             position: absolute;
@@ -412,59 +448,126 @@
             align-items: center;
             justify-content: center;
         }
-        
+
+        .thumbnail.rotated::before {
+            content: "🔄";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: rgba(155, 89, 182, 0.8);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .pdf-summary {
             background: #f8f9fa;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-        
+
+        .pdf-list {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .pdf-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .pdf-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .remove-from-pdf-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .remove-from-pdf-btn:hover {
+            background: #c0392b;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
-            
+
             .control-bar {
                 flex-direction: column;
                 gap: 15px;
             }
-            
-            .nav-group, .rotate-group, .action-group {
+
+            .nav-group,
+            .rotate-group,
+            .action-group {
                 justify-content: center;
                 width: 100%;
             }
-            
-            .nav-btn, .rotate-btn, .action-btn {
+
+            .nav-btn,
+            .rotate-btn,
+            .action-btn {
                 flex: 1;
                 min-width: 80px;
                 justify-content: center;
             }
-            
+
             .shortcut-list {
                 grid-template-columns: 1fr;
+            }
+
+            .pdf-summary {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
 </head>
+
 <body>
     <h1>Advanced Image to PDF Converter</h1>
     <p class="subtitle">Upload, navigate, rotate, and compile your images into a PDF</p>
-    
+
     <div class="container">
         <div class="instructions">
             <h3>How to use:</h3>
             <ol>
                 <li>Click "Select Images" to upload your images (you can select multiple at once)</li>
                 <li>Navigate between images using the navigation buttons or keyboard shortcuts</li>
-                <li>Review each image and rotate if needed</li>
-                <li>Click "Add to PDF" to include the image or "Skip" to exclude it</li>
+                <li>Review each image and rotate if needed - rotations are remembered per image</li>
+                <li>Click "Add to PDF" to include the image or "Remove from PDF" to delete it</li>
+                <li>Use "Remove All" to clear all images from PDF instantly</li>
                 <li>When ready, click "Export PDF" to download your compiled PDF</li>
                 <li>Images are sorted by the date they were added (upload time)</li>
             </ol>
         </div>
-        
+
         <div class="keyboard-shortcuts">
             <h3>Keyboard Shortcuts:</h3>
             <div class="shortcut-list">
@@ -494,37 +597,44 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="upload-section">
             <div class="upload-icon">📁</div>
             <p class="upload-text">Select your images to begin</p>
             <input type="file" id="fileInput" class="file-input" accept="image/*" multiple>
             <button class="upload-btn" id="uploadButton">Select Images</button>
         </div>
-        
+
         <div class="progress-section">
             <div class="progress-bar">
                 <div class="progress" id="progressBar"></div>
             </div>
             <p class="progress-text" id="progressText">No images selected</p>
         </div>
-        
+
         <div class="pdf-summary" id="pdfSummary" style="display: none;">
             <strong>PDF Summary:</strong> <span id="pdfCount">0</span> images added to PDF
+            <button class="remove-all-btn" id="removeAllBtn">Remove All from PDF</button>
         </div>
-        
+
+        <div class="pdf-list" id="pdfList" style="display: none;">
+            <h4>Images in PDF:</h4>
+            <div id="pdfListItems"></div>
+        </div>
+
         <div class="image-viewer" id="imageViewer">
             <div class="jump-to-section">
                 <span>Jump to image:</span>
                 <input type="number" id="jumpInput" class="jump-input" min="1" value="1">
                 <button class="jump-btn" id="jumpBtn">Go</button>
             </div>
-            
+
             <div class="image-counter" id="imageCounter">Image 1 of 10</div>
+            <div class="rotation-indicator" id="rotationIndicator">Rotation: 0°</div>
             <div class="image-container">
                 <img id="currentImage" class="current-image" src="" alt="Current Image">
             </div>
-            
+
             <div class="control-bar">
                 <div class="nav-group">
                     <button class="nav-btn" id="firstBtn" disabled title="First Image (Home)">
@@ -540,7 +650,7 @@
                         <span>⏭</span>
                     </button>
                 </div>
-                
+
                 <div class="rotate-group">
                     <button class="rotate-btn" id="rotateLeft" title="Rotate Left (Shift+Space)">
                         <span>↶</span> Left
@@ -549,18 +659,19 @@
                         <span>↷</span> Right
                     </button>
                 </div>
-                
+
                 <div class="action-group">
                     <button class="action-btn add-btn" id="addToPdf" title="Add to PDF (Enter)">Add to PDF</button>
-                    <button class="action-btn skip-btn" id="skipImage" title="Remove from PDF (Delete)">Skip</button>
+                    <button class="action-btn delete-btn" id="removeFromPdf" title="Remove from PDF (Delete)">Remove
+                        from PDF</button>
                 </div>
             </div>
-            
+
             <div class="thumbnail-container" id="thumbnailContainer">
                 <!-- Thumbnails will be generated here -->
             </div>
         </div>
-        
+
         <div class="export-section" id="exportSection">
             <button class="export-btn" id="exportPdf" title="Export PDF (Ctrl/Cmd + S)">
                 <span>📄</span> Export PDF
@@ -569,7 +680,7 @@
                 PDF will include all images marked with ✓
             </p>
         </div>
-        
+
         <div class="status-message" id="statusMessage"></div>
     </div>
 
@@ -579,9 +690,8 @@
         let currentIndex = 0;
         let currentRotation = 0;
         let pdfImages = []; // This will store ALL images added to PDF
-        let keyRepeatInterval = null;
-        let isKeyHeld = false;
-        
+        let imageRotations = {}; // Store rotations for each image: {index: rotation}
+
         // DOM elements
         const fileInput = document.getElementById('fileInput');
         const uploadButton = document.getElementById('uploadButton');
@@ -589,9 +699,13 @@
         const progressText = document.getElementById('progressText');
         const pdfSummary = document.getElementById('pdfSummary');
         const pdfCount = document.getElementById('pdfCount');
+        const removeAllBtn = document.getElementById('removeAllBtn');
+        const pdfList = document.getElementById('pdfList');
+        const pdfListItems = document.getElementById('pdfListItems');
         const imageViewer = document.getElementById('imageViewer');
         const currentImage = document.getElementById('currentImage');
         const imageCounter = document.getElementById('imageCounter');
+        const rotationIndicator = document.getElementById('rotationIndicator');
         const firstBtn = document.getElementById('firstBtn');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
@@ -601,12 +715,12 @@
         const rotateLeftBtn = document.getElementById('rotateLeft');
         const rotateRightBtn = document.getElementById('rotateRight');
         const addToPdfBtn = document.getElementById('addToPdf');
-        const skipImageBtn = document.getElementById('skipImage');
+        const removeFromPdfBtn = document.getElementById('removeFromPdf');
         const exportSection = document.getElementById('exportSection');
         const exportPdfBtn = document.getElementById('exportPdf');
         const statusMessage = document.getElementById('statusMessage');
         const thumbnailContainer = document.getElementById('thumbnailContainer');
-        
+
         // Event listeners
         uploadButton.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', handleFileSelect);
@@ -618,48 +732,33 @@
         rotateLeftBtn.addEventListener('click', () => rotateImage(-90));
         rotateRightBtn.addEventListener('click', () => rotateImage(90));
         addToPdfBtn.addEventListener('click', addImageToPdf);
-        skipImageBtn.addEventListener('click', skipImage);
+        removeFromPdfBtn.addEventListener('click', removeImageFromPdf);
+        removeAllBtn.addEventListener('click', removeAllFromPdf);
         exportPdfBtn.addEventListener('click', exportPdf);
-        
+
         // Keyboard event listeners
         document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('keyup', handleKeyUp);
-        
+
         // Handle key down events
         function handleKeyDown(event) {
             // Prevent default behavior for our shortcuts
             if (['ArrowLeft', 'ArrowRight', ' ', 'Enter', 'Delete'].includes(event.key)) {
                 event.preventDefault();
             }
-            
+
             // Only process if we have images loaded
             if (images.length === 0) return;
-            
-            switch(event.key) {
+
+            switch (event.key) {
+                // REPLACE WITH:
                 case 'ArrowLeft':
-                    if (!isKeyHeld) {
-                        jumpToImage(currentIndex - 1);
-                        isKeyHeld = true;
-                        // Set up repeating for held key
-                        clearInterval(keyRepeatInterval);
-                        keyRepeatInterval = setInterval(() => {
-                            jumpToImage(currentIndex - 1);
-                        }, 100);
-                    }
+                    jumpToImage(currentIndex - 1);
                     break;
-                    
+
                 case 'ArrowRight':
-                    if (!isKeyHeld) {
-                        jumpToImage(currentIndex + 1);
-                        isKeyHeld = true;
-                        // Set up repeating for held key
-                        clearInterval(keyRepeatInterval);
-                        keyRepeatInterval = setInterval(() => {
-                            jumpToImage(currentIndex + 1);
-                        }, 100);
-                    }
+                    jumpToImage(currentIndex + 1);
                     break;
-                    
+
                 case ' ':
                     event.preventDefault();
                     if (event.shiftKey) {
@@ -668,50 +767,43 @@
                         rotateImage(90); // Space for right rotation
                     }
                     break;
-                    
+
                 case 'Enter':
                     addImageToPdf();
                     break;
-                    
+
                 case 'Delete':
-                    skipImage();
+                    removeImageFromPdf();
                     break;
-                    
+
                 case 's':
                     if (event.ctrlKey || event.metaKey) {
                         event.preventDefault();
                         exportPdf();
                     }
                     break;
-                    
+
                 case 'Home':
                     jumpToImage(0);
                     break;
-                    
+
                 case 'End':
                     jumpToImage(images.length - 1);
                     break;
             }
         }
-        
-        // Handle key up events
-        function handleKeyUp(event) {
-            if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
-                isKeyHeld = false;
-                clearInterval(keyRepeatInterval);
-            }
-        }
-        
+
         // Handle file selection
         function handleFileSelect(event) {
             const files = event.target.files;
             if (files.length === 0) return;
-            
+
             // Convert FileList to array and sort by lastModified date (upload time)
             images = Array.from(files).sort((a, b) => a.lastModified - b.lastModified);
             currentIndex = 0;
             pdfImages = []; // Reset PDF images
-            
+            imageRotations = {}; // Reset rotations
+
             updateProgress();
             showImage();
             imageViewer.style.display = 'block';
@@ -720,56 +812,64 @@
             updateNavigationButtons();
             generateThumbnails();
             updatePdfSummary();
-            
+            updatePdfList();
+
             showStatus(`Loaded ${files.length} images sorted by upload time. Start reviewing and adding to PDF.`, 'success');
         }
-        
+
         // Update progress bar and text
         function updateProgress() {
             const progress = ((currentIndex) / images.length) * 100;
             progressBar.style.width = `${progress}%`;
             progressText.textContent = `Processed ${currentIndex} of ${images.length} images`;
         }
-        
+
         // Show current image
         function showImage() {
             if (currentIndex >= images.length) {
                 return;
             }
-            
+
             const file = images[currentIndex];
             const reader = new FileReader();
-            
-            reader.onload = function(e) {
+
+            reader.onload = function (e) {
                 currentImage.src = e.target.result;
-                
-                // Reset rotation for new image, or keep existing if we're revisiting
-                const existingImage = pdfImages.find(img => img.index === currentIndex);
-                currentRotation = existingImage ? existingImage.rotation : 0;
+
+                // Get stored rotation for this image, or default to 0
+                currentRotation = imageRotations[currentIndex] || 0;
                 currentImage.style.transform = `rotate(${currentRotation}deg)`;
-                
+
                 updateImageCounter();
+                updateRotationIndicator();
                 updateNavigationButtons();
                 updateThumbnails();
                 jumpInput.value = currentIndex + 1;
                 updateActionButton();
             };
-            
+
             reader.readAsDataURL(file);
         }
-        
+
         // Update image counter
         function updateImageCounter() {
             imageCounter.textContent = `Image ${currentIndex + 1} of ${images.length}`;
         }
-        
+
+        // Update rotation indicator
+        function updateRotationIndicator() {
+            const normalizedRotation = ((currentRotation % 360) + 360) % 360;
+            rotationIndicator.textContent = `Rotation: ${normalizedRotation}°`;
+            rotationIndicator.style.display = normalizedRotation !== 0 ? 'block' : 'none';
+        }
+
         // Update action button based on whether image is already in PDF
         function updateActionButton() {
             const isInPdf = pdfImages.some(img => img.index === currentIndex);
             addToPdfBtn.textContent = isInPdf ? 'Update in PDF' : 'Add to PDF';
             addToPdfBtn.style.background = isInPdf ? '#3498db' : '#2ecc71';
         }
-        
+
         // Update navigation buttons state
         function updateNavigationButtons() {
             firstBtn.disabled = currentIndex === 0;
@@ -777,7 +877,7 @@
             nextBtn.disabled = currentIndex === images.length - 1;
             lastBtn.disabled = currentIndex === images.length - 1;
         }
-        
+
         // Jump to specific image
         function jumpToImage(index) {
             if (index >= 0 && index < images.length) {
@@ -785,7 +885,7 @@
                 showImage();
             }
         }
-        
+
         // Handle jump input
         function handleJump() {
             const targetIndex = parseInt(jumpInput.value) - 1;
@@ -795,30 +895,30 @@
                 showStatus('Invalid image number', 'error');
             }
         }
-        
+
         // Generate thumbnails
         function generateThumbnails() {
             thumbnailContainer.innerHTML = '';
-            
+
             images.forEach((file, index) => {
                 const reader = new FileReader();
-                
-                reader.onload = function(e) {
+
+                reader.onload = function (e) {
                     const thumbnail = document.createElement('img');
                     thumbnail.className = 'thumbnail';
                     thumbnail.src = e.target.result;
                     thumbnail.alt = `Thumbnail ${index + 1}`;
                     thumbnail.addEventListener('click', () => jumpToImage(index));
-                    
+
                     thumbnailContainer.appendChild(thumbnail);
                 };
-                
+
                 reader.readAsDataURL(file);
             });
-            
+
             updateThumbnails();
         }
-        
+
         // Update active thumbnail and PDF status
         function updateThumbnails() {
             const thumbnails = document.querySelectorAll('.thumbnail');
@@ -829,7 +929,7 @@
                 } else {
                     thumb.classList.remove('active');
                 }
-                
+
                 // Update PDF added state
                 const isInPdf = pdfImages.some(img => img.index === index);
                 if (isInPdf) {
@@ -837,20 +937,83 @@
                 } else {
                     thumb.classList.remove('added');
                 }
+
+                // Update rotation state
+                const rotation = imageRotations[index] || 0;
+                const normalizedRotation = ((rotation % 360) + 360) % 360;
+                if (normalizedRotation !== 0) {
+                    thumb.classList.add('rotated');
+                } else {
+                    thumb.classList.remove('rotated');
+                }
             });
         }
-        
+
         // Update PDF summary
         function updatePdfSummary() {
             pdfCount.textContent = pdfImages.length;
         }
-        
-        // Rotate image
+
+        // Update PDF list
+        function updatePdfList() {
+            pdfListItems.innerHTML = '';
+
+            if (pdfImages.length === 0) {
+                pdfList.style.display = 'none';
+                return;
+            }
+
+            pdfList.style.display = 'block';
+
+            // Sort by index to maintain order
+            const sortedPdfImages = [...pdfImages].sort((a, b) => a.index - b.index);
+
+            sortedPdfImages.forEach((imageData, listIndex) => {
+                const listItem = document.createElement('div');
+                listItem.className = 'pdf-list-item';
+
+                const rotation = imageRotations[imageData.index] || 0;
+                const normalizedRotation = ((rotation % 360) + 360) % 360;
+                const rotationText = normalizedRotation !== 0 ? ` (${normalizedRotation}°)` : '';
+
+                listItem.innerHTML = `
+                    <span>Image ${imageData.index + 1}${rotationText}</span>
+                    <button class="remove-from-pdf-btn" data-index="${imageData.index}">Remove</button>
+                `;
+
+                pdfListItems.appendChild(listItem);
+            });
+
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.remove-from-pdf-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const indexToRemove = parseInt(e.target.getAttribute('data-index'));
+                    removeImageByIndex(indexToRemove);
+                });
+            });
+        }
+
+        // Rotate image and store rotation
         function rotateImage(degrees) {
             currentRotation += degrees;
+
+            // Store rotation for current image
+            imageRotations[currentIndex] = currentRotation;
+
+            // Apply rotation to image
             currentImage.style.transform = `rotate(${currentRotation}deg)`;
+
+            // Update rotation indicator
+            updateRotationIndicator();
+
+            // Update thumbnails to show rotation state
+            updateThumbnails();
+
+            // Show status message
+            const normalizedRotation = ((currentRotation % 360) + 360) % 360;
+            showStatus(`Image ${currentIndex + 1} rotated to ${normalizedRotation}°`, 'success');
         }
-        
+
         // Add image to PDF with rotation
         function addImageToPdf() {
             const imageData = {
@@ -858,7 +1021,7 @@
                 rotation: currentRotation,
                 index: currentIndex
             };
-            
+
             // Check if this image is already in the PDF
             const existingIndex = pdfImages.findIndex(img => img.index === currentIndex);
             if (existingIndex !== -1) {
@@ -870,53 +1033,85 @@
                 pdfImages.push(imageData);
                 showStatus(`Image ${currentIndex + 1} added to PDF.`, 'success');
             }
-            
+
             updateThumbnails();
             updatePdfSummary();
+            updatePdfList();
             updateActionButton();
         }
-        
-        // Skip current image (remove from PDF)
-        function skipImage() {
-            // Remove from PDF if it was added
+
+        // Remove current image from PDF
+        function removeImageFromPdf() {
             const existingIndex = pdfImages.findIndex(img => img.index === currentIndex);
             if (existingIndex !== -1) {
                 pdfImages.splice(existingIndex, 1);
                 showStatus(`Image ${currentIndex + 1} removed from PDF.`, 'success');
+
+                updateThumbnails();
+                updatePdfSummary();
+                updatePdfList();
+                updateActionButton();
             } else {
                 showStatus(`Image ${currentIndex + 1} is not in PDF.`, 'success');
             }
-            
+        }
+
+        // Remove image by index from PDF
+        function removeImageByIndex(index) {
+            const existingIndex = pdfImages.findIndex(img => img.index === index);
+            if (existingIndex !== -1) {
+                pdfImages.splice(existingIndex, 1);
+                showStatus(`Image ${index + 1} removed from PDF.`, 'success');
+
+                updateThumbnails();
+                updatePdfSummary();
+                updatePdfList();
+                updateActionButton();
+            }
+        }
+
+        // Remove ALL images from PDF
+        function removeAllFromPdf() {
+            if (pdfImages.length === 0) {
+                showStatus('No images to remove from PDF.', 'success');
+                return;
+            }
+
+            const count = pdfImages.length;
+            pdfImages = [];
+            showStatus(`All ${count} images removed from PDF.`, 'success');
+
             updateThumbnails();
             updatePdfSummary();
+            updatePdfList();
             updateActionButton();
         }
-        
-        // Export PDF - FIXED VERSION with dynamic page sizes
+
+        // Export PDF with stored rotations
         function exportPdf() {
             if (pdfImages.length === 0) {
                 showStatus('No images added to PDF. Please add some images first.', 'error');
                 return;
             }
-            
+
             showStatus('Creating PDF... This may take a moment.', 'success');
-            
+
             // Sort PDF images by index to maintain order
             const sortedPdfImages = [...pdfImages].sort((a, b) => a.index - b.index);
-            
+
             // Use jsPDF to create the PDF
             const { jsPDF } = window.jspdf;
-            
+
             // Process images and add to PDF
             let promises = sortedPdfImages.map((imageData, index) => {
                 return new Promise((resolve, reject) => {
                     const img = new Image();
-                    img.onload = function() {
+                    img.onload = function () {
                         try {
                             // Create a canvas to handle rotation
                             const canvas = document.createElement('canvas');
                             const ctx = canvas.getContext('2d');
-                            
+
                             // Set canvas dimensions based on rotation
                             if (imageData.rotation % 180 === 0) {
                                 canvas.width = img.width;
@@ -925,24 +1120,24 @@
                                 canvas.width = img.height;
                                 canvas.height = img.width;
                             }
-                            
+
                             // Apply rotation
                             ctx.translate(canvas.width / 2, canvas.height / 2);
                             ctx.rotate(imageData.rotation * Math.PI / 180);
                             ctx.drawImage(img, -img.width / 2, -img.height / 2);
-                            
+
                             // Convert canvas to data URL
                             const rotatedImageData = canvas.toDataURL('image/jpeg', 0.8);
-                            
+
                             // Calculate PDF page size based on image dimensions
                             // Use A4 aspect ratio as base but scale to match image height
                             const a4Width = 595; // A4 width in points (72 DPI)
                             const a4Height = 842; // A4 height in points
-                            
+
                             // Calculate dimensions maintaining aspect ratio
                             let pdfWidth, pdfHeight;
                             const aspectRatio = canvas.width / canvas.height;
-                            
+
                             if (aspectRatio > 1) {
                                 // Landscape orientation
                                 pdfHeight = a4Height;
@@ -952,39 +1147,39 @@
                                 pdfWidth = a4Width;
                                 pdfHeight = pdfWidth / aspectRatio;
                             }
-                            
+
                             // Create PDF with custom page size for this image
                             const pdf = index === 0 ? new jsPDF({
                                 orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
                                 unit: 'pt',
                                 format: [pdfWidth, pdfHeight]
                             }) : window.pdf;
-                            
+
                             // Add page if not the first image
                             if (index > 0) {
                                 pdf.addPage([pdfWidth, pdfHeight], pdfWidth > pdfHeight ? 'landscape' : 'portrait');
                             }
-                            
+
                             // Add image to fill the entire page
                             pdf.addImage(rotatedImageData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-                            
+
                             // Store the pdf for the next iteration
                             window.pdf = pdf;
-                            
+
                             resolve();
                         } catch (error) {
                             reject(error);
                         }
                     };
-                    
-                    img.onerror = function() {
+
+                    img.onerror = function () {
                         reject(new Error(`Failed to load image ${imageData.index + 1}`));
                     };
-                    
+
                     img.src = imageData.src;
                 });
             });
-            
+
             // When all images are processed, save the PDF
             Promise.all(promises)
                 .then(() => {
@@ -1000,13 +1195,13 @@
                     delete window.pdf;
                 });
         }
-        
+
         // Show status message
         function showStatus(message, type) {
             statusMessage.textContent = message;
             statusMessage.className = 'status-message ' + type;
             statusMessage.style.display = 'block';
-            
+
             // Auto-hide after 4 seconds
             setTimeout(() => {
                 statusMessage.style.display = 'none';
@@ -1014,4 +1209,5 @@
         }
     </script>
 </body>
+
 </html>
