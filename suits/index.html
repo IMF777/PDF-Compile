@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suits Personality Quiz</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 900px; margin: auto; padding: 20px; background: #f9f9f9; }
+  h1, h2 { text-align: center; }
+  .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+  label { display: block; margin: 5px 0; cursor: pointer;}
+  button { padding: 10px 20px; font-size: 16px; border: none; background: #2b7a78; color: #fff; border-radius: 5px; cursor: pointer; }
+  button:hover { background: #3aafa9; }
+  .results { background: #fff; padding: 20px; border-radius: 8px; margin-top: 20px; }
+  .character { margin-bottom: 15px; }
+</style>
+</head>
+<body>
+
+<h1>Suits Character Personality Quiz</h1>
+<p>Answer honestly. At the end, we'll tell you which Suits characters you most resemble and why.</p>
+
+<form id="quizForm"></form>
+
+<div style="text-align:center;">
+  <button onclick="submitQuiz()">Submit Quiz</button>
+</div>
+
+<div id="results" class="results" style="display:none;"></div>
+
+<script>
+const characters = [
+  "Harvey Specter", "Mike Ross", "Louis Litt", "Donna Paulsen", "Jessica Pearson",
+  "Rachel Zane", "Katrina Bennett", "Robert Zane", "Sheila Sazs", "Trevor Evans",
+  "Dana Scott", "Travis Tanner", "Harold Gunderson", "Jeff Malone", "Jack Soloff"
+];
+
+const questions = [
+  // First 3 original questions
+  {q: "You prefer making decisions based on:", 
+   options: [
+     {text: "Logic and strategy", weights: { "Harvey Specter":2, "Mike Ross":1, "Louis Litt":1 }},
+     {text: "Empathy and intuition", weights: { "Donna Paulsen":2, "Rachel Zane":1 }},
+     {text: "Tradition and procedure", weights: { "Jessica Pearson":2, "Robert Zane":1 }},
+     {text: "Personal gain", weights: { "Travis Tanner":2, "Jeff Malone":1 }}
+   ]},
+  {q: "In a team, your role is usually:",
+   options: [
+     {text: "Leader and strategist", weights: { "Harvey Specter":2, "Jessica Pearson":1 }},
+     {text: "Problem solver behind the scenes", weights: { "Mike Ross":2, "Donna Paulsen":1 }},
+     {text: "Detail-oriented enforcer", weights: { "Louis Litt":2, "Katrina Bennett":1 }},
+     {text: "Supportive advisor", weights: { "Rachel Zane":2, "Sheila Sazs":1 }}
+   ]},
+  {q: "When faced with conflict, you:", 
+   options: [
+     {text: "Confront directly and strategically", weights: { "Harvey Specter":2, "Travis Tanner":1 }},
+     {text: "Analyze and find a loophole", weights: { "Louis Litt":2, "Mike Ross":1 }},
+     {text: "Mediate calmly", weights: { "Jessica Pearson":2, "Donna Paulsen":1 }},
+     {text: "Avoid and defer", weights: { "Rachel Zane":2, "Harold Gunderson":1 }}
+   ]},
+  // Remaining 47 questions
+  {q:"You handle pressure by:", options:[
+    {text:"Taking control immediately", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Thinking through options", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Following rules meticulously", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Relying on others", weights:{"Rachel Zane":2,"Donna Paulsen":1}}
+  ]},
+  {q:"Your ideal work environment is:", options:[
+    {text:"Competitive and fast-paced", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Collaborative and mentoring", weights:{"Mike Ross":2,"Donna Paulsen":1}},
+    {text:"Structured and rule-oriented", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Flexible and independent", weights:{"Rachel Zane":2,"Sheila Sazs":1}}
+  ]},
+  {q:"You value in a colleague:", options:[
+    {text:"Decisiveness", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Integrity", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Loyalty", weights:{"Louis Litt":2,"Donna Paulsen":1}},
+    {text:"Ambition", weights:{"Travis Tanner":2,"Sheila Sazs":1}}
+  ]},
+  {q:"Your conflict style is:", options:[
+    {text:"Direct and confrontational", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Analytical and tactical", weights:{"Mike Ross":2,"Louis Litt":1}},
+    {text:"Strategic and diplomatic", weights:{"Jessica Pearson":2,"Donna Paulsen":1}},
+    {text:"Avoidant or reactive", weights:{"Rachel Zane":2,"Harold Gunderson":1}}
+  ]},
+  {q:"You are most motivated by:", options:[
+    {text:"Winning", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Justice and ethics", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Recognition", weights:{"Louis Litt":2,"Dana Scott":1}},
+    {text:"Helping others", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"How do you handle mistakes?", options:[
+    {text:"Cover them strategically", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Learn and adapt quickly", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Analyze and obsess over details", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Seek guidance", weights:{"Rachel Zane":2,"Donna Paulsen":1}}
+  ]},
+  {q:"You consider yourself:", options:[
+    {text:"Confident and ambitious", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Intelligent and ethical", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Meticulous and perfectionist", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Supportive and empathetic", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your approach to rules is:", options:[
+    {text:"Bend them when needed", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Follow logic over them", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Follow precisely", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Flexible, case by case", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your decision-making relies on:", options:[
+    {text:"Instinct", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Facts and reasoning", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Experience and precedent", weights:{"Louis Litt":2,"Robert Zane":1}},
+    {text:"Advice and intuition", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You handle criticism by:", options:[
+    {text:"Challenging it", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Analyzing it objectively", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Taking it personally", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Considering others' perspectives", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You prefer projects that are:", options:[
+    {text:"High-stakes and competitive", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Challenging but ethical", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Meticulously structured", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Collaborative", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your strongest skill is:", options:[
+    {text:"Negotiation", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Analytical thinking", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Attention to detail", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Interpersonal insight", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You handle stress by:", options:[
+    {text:"Taking action immediately", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Planning and calculating", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Worrying and obsessing", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Seeking support", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"In negotiations, you:", options:[
+    {text:"Dominate and dictate terms", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Use intellect and evidence", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Follow rules and precedent", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Read the other party carefully", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your personal philosophy is:", options:[
+    {text:"Win at all costs", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Do what's right", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Perfect every detail", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Help others thrive", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You prefer recognition that is:", options:[
+    {text:"Visible and public", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Merit-based and subtle", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Earned through perfection", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Acknowledged through relationships", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You deal with rivals by:", options:[
+    {text:"Outsmarting them strategically", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Exposing flaws logically", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Obsessing over technicalities", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Negotiating carefully", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your moral compass:", options:[
+    {text:"Flexible if needed", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Guides every decision", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Sometimes overridden by ambition", weights:{"Louis Litt":2,"Dana Scott":1}},
+    {text:"Prioritizes fairness and empathy", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You approach learning by:", options:[
+    {text:"Learning by experience", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Studying and analyzing deeply", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Repetition and perfectionism", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Seeking guidance", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You value in leadership:", options:[
+    {text:"Authority and decisiveness", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Integrity and intelligence", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Attention to detail", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Support and loyalty", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your biggest work strength is:", options:[
+    {text:"Charisma", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Quick learning", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Precision", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Intuition", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"In a crisis, you:", options:[
+    {text:"Take charge", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Think analytically", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Focus on details", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Support others", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your approach to work is:", options:[
+    {text:"Aggressive and ambitious", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Ethical and principled", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Meticulous", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Empathetic and strategic", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You handle rules by:", options:[
+    {text:"Following selectively", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Analyzing and applying wisely", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Strict adherence", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Adapting carefully", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"In debates, you:", options:[
+    {text:"Dominate confidently", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Focus on logic", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Attack details", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Read reactions and respond", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You prioritize:", options:[
+    {text:"Winning", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Truth", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Perfection", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"People", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You deal with failure by:", options:[
+    {text:"Regrouping and attacking", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Analyzing lessons", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Obsessing over mistakes", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Supporting others", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your professional reputation matters:", options:[
+    {text:"Above all", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"As a reflection of integrity", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Through excellence", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Through trust", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You are most challenged by:", options:[
+    {text:"Inefficiency", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Dishonesty", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Mistakes", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Manipulation", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your communication style is:", options:[
+    {text:"Direct and confident", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Clear and logical", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Detailed and precise", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Persuasive and intuitive", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You value in work recognition:", options:[
+    {text:"Achievement", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Integrity", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Perfection", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Relationships", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You handle office politics by:", options:[
+    {text:"Manipulate strategically", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Outsmart carefully", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Follow rules and exploit details", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Observe and advise", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You work best under:", options:[
+    {text:"High stakes pressure", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Clear logic and purpose", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Structured environment", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Supportive team", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You are motivated by:", options:[
+    {text:"Success and recognition", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Justice and ethics", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Perfection", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Helping others thrive", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"In stressful situations you:", options:[
+    {text:"Take charge immediately", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Think strategically", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Focus on detail and perfection", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Support team members", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your career focus is:", options:[
+    {text:"Power and influence", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Knowledge and ethics", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Precision and respect", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Trust and support", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You handle deadlines by:", options:[
+    {text:"Acting fast and confident", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Planning carefully", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Double-checking everything", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Coordinating with team", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You are most frustrated by:", options:[
+    {text:"Incompetence", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Dishonesty", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Mistakes", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Drama", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You define success by:", options:[
+    {text:"Achievement and respect", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Ethical impact", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Excellence in work", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Positive relationships", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"Your working style is:", options:[
+    {text:"Commanding", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Analytical", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Methodical", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Supportive", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You are most energized by:", options:[
+    {text:"Challenge and competition", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Solving complex problems", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Perfection and mastery", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Helping others succeed", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You prefer recognition that is:", options:[
+    {text:"Visible", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Merit-based", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Earned through work", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Acknowledged personally", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You respond to challenges by:", options:[
+    {text:"Leading boldly", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Thinking and planning", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Obsessing over perfection", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Supporting others", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You value in colleagues:", options:[
+    {text:"Confidence", weights:{"Harvey Specter":2,"Dana Scott":1}},
+    {text:"Intelligence", weights:{"Mike Ross":2,"Jeff Malone":1}},
+    {text:"Detail-orientation", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Empathy", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]},
+  {q:"You are most challenged by:", options:[
+    {text:"Arrogance", weights:{"Harvey Specter":2,"Travis Tanner":1}},
+    {text:"Dishonesty", weights:{"Mike Ross":2,"Robert Zane":1}},
+    {text:"Imperfection", weights:{"Louis Litt":2,"Katrina Bennett":1}},
+    {text:"Manipulation", weights:{"Donna Paulsen":2,"Rachel Zane":1}}
+  ]}
+];
+
+// Generate quiz HTML
+const form = document.getElementById('quizForm');
+questions.forEach((q, i)=>{
+  const div = document.createElement('div');
+  div.className = 'question';
+  div.innerHTML = `<h3>${i+1}. ${q.q}</h3>`;
+  q.options.forEach((opt, j)=>{
+    const id = `q${i}_o${j}`;
+    div.innerHTML += `<label><input type="radio" name="q${i}" value="${j}" id="${id}"> ${opt.text}</label>`;
+  });
+  form.appendChild(div);
+});
+
+// Process quiz and calculate results
+function submitQuiz(){
+  let scores = {};
+  characters.forEach(c=>scores[c]=0);
+
+  questions.forEach((q, i)=>{
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if(selected){
+      const option = q.options[selected.value];
+      for(let c in option.weights){
+        scores[c] += option.weights[c];
+      }
+    }
+  });
+
+  // Calculate total possible points for percentage
+  let totals = {};
+  characters.forEach(c=>{
+    totals[c] = questions.reduce((sum,q)=>{
+      return sum + Math.max(...q.options.map(opt=>opt.weights[c]||0));
+    },0);
+  });
+
+  // Sort characters by score %
+  let resultArray = characters.map(c=>{
+    const percent = totals[c]===0 ? 0 : Math.round((scores[c]/totals[c])*100);
+    return {character:c, score:scores[c], percent:percent};
+  }).sort((a,b)=>b.percent - a.percent);
+
+  // Display results with explanations
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.style.display='block';
+  resultsDiv.innerHTML = `<h2>Your Suits Character Match</h2>`;
+  resultArray.forEach(r=>{
+    let explanation = '';
+    switch(r.character){
+      case "Harvey Specter": explanation = "Confident, strategic, thrives on winning and logic over feelings."; break;
+      case "Mike Ross": explanation = "Intelligent, curious, driven by truth and ethical reasoning."; break;
+      case "Louis Litt": explanation = "Detail-oriented, competitive, sometimes socially awkward, perfectionist."; break;
+      case "Donna Paulsen": explanation = "Intuitive, emotionally intelligent, supports others strategically."; break;
+      case "Jessica Pearson": explanation = "Respected leader, ethical, prioritizes principle over ego."; break;
+      case "Rachel Zane": explanation = "Ambitious, practical, works well within systems, empathic."; break;
+      case "Katrina Bennett": explanation = "Diligent, precise, follows rules but ambitious."; break;
+      case "Robert Zane": explanation = "Principled, experienced, values reputation and justice."; break;
+      case "Sheila Sazs": explanation = "Confident, meticulous, assertive, sometimes dramatic."; break;
+      case "Trevor Evans": explanation = "Impulsive, sometimes unreliable, loyal to friends."; break;
+      case "Dana Scott": explanation = "Ambitious, calm, strategic and competitive."; break;
+      case "Travis Tanner": explanation = "Aggressive, opportunistic, enjoys challenging others."; break;
+      case "Harold Gunderson": explanation = "Naive, earnest, diligent but socially awkward."; break;
+      case "Jeff Malone": explanation = "Calm, experienced, rational and reliable."; break;
+      case "Jack Soloff": explanation = "Cunning, ambitious, politically savvy."; break;
+    }
+    resultsDiv.innerHTML += `<div class="character"><strong>${r.character}:</strong> ${r.percent}% match — ${explanation}</div>`;
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>
